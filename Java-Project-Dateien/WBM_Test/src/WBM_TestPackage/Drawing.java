@@ -12,8 +12,8 @@ public class Drawing extends JComponent
 	
 	private Pfad[] erhaltenesArray;
 	
-	private int rgb1=0;
-	private int rgb2=0;
+	private int rgb1=200;
+	private int rgb2=20;
 	private int rgb3=0;
 	private int strokeline=5;
 	private int strokedot=8;

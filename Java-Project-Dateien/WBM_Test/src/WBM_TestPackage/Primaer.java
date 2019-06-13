@@ -80,8 +80,8 @@ public class Primaer extends JFrame implements ActionListener
 // Buttons erstellen
 	    
 		JPanel buttonPanel = new JPanel();
-		buttonSetStart = new JButton("Test1");
-		buttonSetEnd = new JButton("Test2");
+		buttonSetStart = new JButton("Clear");
+		buttonSetEnd = new JButton("XXXXXXXX");
 		buttonGetWay = new JButton("Strecke ermitteln");
 		
 		String[] attributauswahl = { "Ohne", "Barrierefrei" };
@@ -129,8 +129,8 @@ public class Primaer extends JFrame implements ActionListener
 		hintergrundbildLabel.addMouseListener(new ClickListener());
 		
 		this.setLocationRelativeTo(null);
-		this.setSize(1700, 908);
-		//this.setExtendedState(Frame.MAXIMIZED_BOTH);
+		//this.setSize(1700, 908);
+		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setLocation(120,60);
 	}
 
@@ -157,7 +157,8 @@ public class Primaer extends JFrame implements ActionListener
 	{
 		 if(e.getSource() == this.buttonSetStart)
 		 {
-			 
+			 Sammlung=new Pfad[0];
+			 this.neuaufbau();
 		 }
 		 else if(e.getSource() == this.buttonSetEnd)
 		 {
@@ -213,7 +214,7 @@ Quelle ist die angegebene CSV Datei
                 	Zaehler++;
                 }
                 
-                br.readLine();
+                //br.readLine();
             }
 
         } catch (FileNotFoundException e)
