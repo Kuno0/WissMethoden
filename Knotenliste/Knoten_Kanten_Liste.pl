@@ -120,8 +120,8 @@ kante_gerichtet(71,89).
 kante_gerichtet(72,89).
 kante_gerichtet(72,112).
 kante_gerichtet(73,74).
-kante_gerichtet(73,84).
-kante_gerichtet(74,84).
+kante_gerichtet(73,270).
+kante_gerichtet(74,270).
 kante_gerichtet(75,76).
 kante_gerichtet(75,207).
 kante_gerichtet(77,78).
@@ -141,8 +141,6 @@ kante_gerichtet(81,93).
 kante_gerichtet(82,97).
 kante_gerichtet(83,208).
 kante_gerichtet(84,85).
-kante_gerichtet(84,89).
-kante_gerichtet(84,90).
 kante_gerichtet(85,86).
 kante_gerichtet(86,87).
 kante_gerichtet(87,88).
@@ -196,11 +194,9 @@ kante_gerichtet(123,125).
 kante_gerichtet(125,127).
 kante_gerichtet(126,127).
 kante_gerichtet(128,129).
-kante_gerichtet(128,131).
 kante_gerichtet(128,132).
 kante_gerichtet(128,133).
 kante_gerichtet(129,130).
-kante_gerichtet(129,131).
 kante_gerichtet(130,131).
 kante_gerichtet(131,132).
 kante_gerichtet(132,134).
@@ -398,8 +394,16 @@ kante_gerichtet(265,266).
 kante_gerichtet(265,267).
 kante_gerichtet(267,268).
 kante_gerichtet(268,269).
+kante_gerichtet(89,270).
+kante_gerichtet(90,270).
+kante_gerichtet(145,271).
+kante_gerichtet(127,272).
+kante_gerichtet(128,272).
+kante_gerichtet(129,272).
 
 kante(X,Y):-kante_gerichtet(X,Y).
 kante(X,Y):-kante_gerichtet(Y,X).
 pfad(X,Y):-kante(X,Y).
-pfad(X,Y):-pfad(X,Z),kante(Z,Y).
+pfad(X,Z):-pfad(X,Y),kante(Y,Z).
+
+
