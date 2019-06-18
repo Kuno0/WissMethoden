@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class Primaer extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 6930173412792515849L;
 	
-	static Pfad[] Sammlung;
+    ArrayList<Pfad> Sammlung= new ArrayList<>();
 	JButton buttonSetStart;
 	JButton buttonSetEnd;
 	JButton buttonGetWay;
@@ -25,6 +26,7 @@ public class Primaer extends JFrame implements ActionListener
 	JComboBox comboBoxAttributwahl;
 	JTextField textFStart;
 	JTextField textFZiel;
+	public prolog pclass;
 	
 	public static int spalte_NamePStart=0;
 	public static int spalte_NamePEnd=1;
@@ -34,6 +36,7 @@ public class Primaer extends JFrame implements ActionListener
 	public static int spalte_EndPY=6;
 	public static int spalte_MerkmalBarrierefrei=8;
 	public static String csvDatenbasis = ".\\DatenBasis.CSV";
+	private Boolean gitter=false;
 	
 	public static Primaer p;
 	JPopupMenu popup;
@@ -59,11 +62,13 @@ public class Primaer extends JFrame implements ActionListener
 	      {
 	 		 if(event.getActionCommand()=="Punkt als Start festlegen")
 			 {
-	 			 textFStart.setText("Nächster: "+ naechstenPunktErmitteln(MenuXPos,MenuYPos) +"; X: "+ MenuXPos +"; Y: "+ MenuYPos);
+	 			 //textFStart.setText("Nächster: "+ naechstenPunktErmitteln(MenuXPos,MenuYPos) +"; X: "+ MenuXPos +"; Y: "+ MenuYPos);
+	 			 textFStart.setText(naechstenPunktErmitteln(MenuXPos,MenuYPos));
 			 }
 	 		 else if (event.getActionCommand()=="Punkt als Ziel festlegen")
 	 		 {
-	 			textFZiel.setText("Nächster: "+ naechstenPunktErmitteln(MenuXPos,MenuYPos) +"; X: "+ MenuXPos +"; Y: "+ MenuYPos);
+	 			//textFZiel.setText("Nächster: "+ naechstenPunktErmitteln(MenuXPos,MenuYPos) +"; X: "+ MenuXPos +"; Y: "+ MenuYPos);
+	 			textFZiel.setText(naechstenPunktErmitteln(MenuXPos,MenuYPos));
 	 		 }
 	      }
 	    };
@@ -81,7 +86,7 @@ public class Primaer extends JFrame implements ActionListener
 	    
 		JPanel buttonPanel = new JPanel();
 		buttonSetStart = new JButton("Clear");
-		buttonSetEnd = new JButton("XXXXXXXX");
+		buttonSetEnd = new JButton("Karte");
 		buttonGetWay = new JButton("Strecke ermitteln");
 		
 		String[] attributauswahl = { "Ohne", "Barrierefrei" };
@@ -136,8 +141,9 @@ public class Primaer extends JFrame implements ActionListener
 
 	public static void main(String[] args)
 	{	
-// Array mit Pfaden erstellen
-		pfadObjekteLaden("Ohne");
+		// Array mit Pfaden erstellen
+		//berechneterpfadladen();
+		//pfadObjekteLaden("Ohne");
 		p = new Primaer();
 		p.neuaufbau();
 	}
@@ -145,38 +151,155 @@ public class Primaer extends JFrame implements ActionListener
 	public void neuaufbau()
 	{
 // Drawing als JComponent mit Strichen und Punkten erstellen und als GlassPane festlegen
-		Drawing linienUndPunkte = new Drawing();
-		linienUndPunkte.WertUebergeben(Sammlung);
-		this.setGlassPane(linienUndPunkte);
-		linienUndPunkte.setVisible(true);
-// Fenster ausführen
-		this.setVisible(true);
+		if(this.gitter==true) {
+			
+			Drawing linienUndPunkte = new Drawing();
+			linienUndPunkte.WertUebergebenB(Sammlung);
+			this.setGlassPane(linienUndPunkte);
+			linienUndPunkte.setVisible(true);
+	// Fenster ausführen
+			this.setVisible(true);
+		}else {
+			
+			Drawing linienUndPunkte = new Drawing();
+			linienUndPunkte.WertUebergeben(Sammlung);
+			this.setGlassPane(linienUndPunkte);
+			linienUndPunkte.setVisible(true);
+	// Fenster ausführen
+			this.setVisible(true);
+			
+		}
+
 	}
 	
-	public void actionPerformed(ActionEvent e)
+	public void actionPerformed(ActionEvent e) 
 	{
 		 if(e.getSource() == this.buttonSetStart)
 		 {
-			 Sammlung=new Pfad[0];
+			 Sammlung.clear();
 			 this.neuaufbau();
 		 }
 		 else if(e.getSource() == this.buttonSetEnd)
 		 {
-			 
+			 Sammlung.clear();
+			 berechneBackground();
+			 this.neuaufbau();
 		 }
 		 else if (e.getSource() == this.buttonGetWay)
 		 {
-			 pfadObjekteLaden(comboBoxAttributwahl.getSelectedItem().toString());
+			 Sammlung.clear();
+			 //berechneterpfadladen();
+			 try {
+				prologberechnung();
+			} catch (Exception e1) {
+	
+				e1.printStackTrace();
+			}			 
+			 //pfadObjekteLaden(comboBoxAttributwahl.getSelectedItem().toString());
 			 this.neuaufbau();
 		 }
 	}
+	public void prologberechnung()throws Exception 
+	{
+		this.pclass=new prolog();
+		if(comboBoxAttributwahl.getSelectedItem().toString()=="Barrierefrei"){
+			this.pclass.setMerkmal(1);
+		}else 
+		{
+			this.pclass.setMerkmal(0);
+		}
+		this.pclass.setEingang(Integer.parseInt(textFStart.getText()));
+		this.pclass.setAusgang(Integer.parseInt(textFZiel.getText()));
+		berechneterpfadladen(this.pclass.berechneRoute());
+	}
+	public void berechneBackground()
+	{
+		    
+			BufferedReader br = null;
+	        String line = "";
+	        this.gitter=true;
+	        	try
+	        {
+	            br = new BufferedReader(new FileReader(".\\DatenBasis.CSV"));
+	            br.readLine();
+	            while ((line = br.readLine()) != null)
+	            {
+	                String[] eintragGelesen = line.split(";");
+	                this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
+	 	                //br.readLine();
+	            }
+	        } catch (FileNotFoundException e)
+	        {
+	            e.printStackTrace();
+	        } catch (IOException e)
+	        {
+	            e.printStackTrace();
+	        } finally
+	        {
+	            if (br != null)
+	            {
+	                try
+	                {
+	                    br.close();
+	                } catch (IOException e)
+	                {
+	                    e.printStackTrace();
+	                }
+	            }
+	        	}
+	}
+	public void berechneterpfadladen(String[] pfad)
+	{
+			BufferedReader br = null;
+	        String line = "";
+	        this.gitter=false;
+
+	        for(int g=0; g<pfad.length-1; g++) { 
+	        	try
+	        {
+	            br = new BufferedReader(new FileReader(".\\DatenBasis.CSV"));
+	            br.readLine();
+	            while ((line = br.readLine()) != null)
+	            {
+	                String[] eintragGelesen = line.split(";");
+	                if ((Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g+1])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g]))||(Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g+1])))
+	                {
+	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
+
+	                }	                
+	                //br.readLine();
+	            }
+
+	        } catch (FileNotFoundException e)
+	        {
+	            e.printStackTrace();
+	        } catch (IOException e)
+	        {
+	            e.printStackTrace();
+	        } finally
+	        {
+	            if (br != null)
+	            {
+	                try
+	                {
+	                    br.close();
+	                } catch (IOException e)
+	                {
+	                    e.printStackTrace();
+	                }
+	            }
+	        	
+	        }
+	        	}
+	       
+	}
 	
-	public static void pfadObjekteLaden(String aMerkmal)
+/*	public static void pfadObjekteLaden(String aMerkmal)
 	{
 /*
 Füllt das Array "Sammlung" mit Pfad-Objekten des gewählten Merkmals
 Quelle ist die angegebene CSV Datei
- */
+ 
 		//Sammlung=null;
 		
 		
@@ -196,7 +319,7 @@ Quelle ist die angegebene CSV Datei
 		BufferedReader br = null;
         String line = "";
         int Zaehler = 0;
-        Sammlung = new Pfad[1];
+        //Sammlung = new Pfad[1];
         
         try
         {
@@ -208,8 +331,8 @@ Quelle ist die angegebene CSV Datei
                 //System.out.println(eintragGelesen[aktivesMerkmal]);
                 if ((aktivesMerkmal==0)||(Integer.parseInt(eintragGelesen[aktivesMerkmal])==1))
                 {
-                	Sammlung = Arrays.copyOf(Sammlung, 1+Zaehler);
-                	Sammlung[Zaehler] = new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY]));
+                	//Sammlung = Arrays.copyOf(Sammlung, 1+Zaehler);
+                	//Sammlung[Zaehler] = new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY]));
             		//System.out.println(Zaehler);
                 	Zaehler++;
                 }
@@ -236,7 +359,7 @@ Quelle ist die angegebene CSV Datei
                 }
             }
         }		
-	}
+	}*/
 	
 	public String naechstenPunktErmitteln(int xSuche, int ySuche)
 	{
