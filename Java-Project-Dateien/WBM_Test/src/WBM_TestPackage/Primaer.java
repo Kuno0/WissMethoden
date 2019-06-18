@@ -254,7 +254,7 @@ public class Primaer extends JFrame implements ActionListener
 	        String line = "";
 	        this.gitter=false;
 
-	        for(int g=0; g<pfad.length-1; g++) { 
+	        for(int g=0; g<pfad.length-2; g++) { 
 	        	try
 	        {
 	            br = new BufferedReader(new FileReader(".\\DatenBasis.CSV"));
