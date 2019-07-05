@@ -44,7 +44,7 @@ public class prolog {
 		Query q1 = 
 			    new Query( 
 				"consult", 
-				new Term[] {new Atom("prolog/A2.pl")} 
+				new Term[] {new Atom("./prolog/A2.pl")} 
 			    );
 		q1.hasSolution();
 		//System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
