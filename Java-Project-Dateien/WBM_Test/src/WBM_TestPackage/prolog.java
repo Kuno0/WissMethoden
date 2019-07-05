@@ -41,12 +41,26 @@ public class prolog {
 	
 	public String[] berechneRoute() throws Exception
 	{
+		if (merkmal == 0)
+		{		
 		Query q1 = 
 			    new Query( 
 				"consult", 
 				new Term[] {new Atom("./prolog/A2.pl")} 
 			    );
 		q1.hasSolution();
+		}
+		
+		if (merkmal == 1)
+		{		
+		Query q1 = 
+			    new Query( 
+				"consult", 
+				new Term[] {new Atom("./prolog/A2_beh.pl")} 
+			    );
+		q1.hasSolution();
+		} 
+		
 		//System.out.println( "consult " + (q1.hasSolution() ? "succeeded" : "failed"));
 		Variable X = new Variable("X");
 		//Variable X = new Variable("X");
@@ -91,6 +105,10 @@ public class prolog {
 	        return pfad;
 	      }
 	      return null;*/
+	}
+	/*private void if(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 	//public static void main(String[] args)
 	/*{	
