@@ -232,9 +232,14 @@ public class Primaer extends JFrame implements ActionListener
 		{
 			this.pclass.setMerkmal(0);
 		}
+		try {
 		this.pclass.setEingang(Integer.parseInt(textFStart.getText().substring(0, 3)));
 		this.pclass.setAusgang(Integer.parseInt(textFZiel.getText().substring(0, 3)));
 		berechneterpfadladen(this.pclass.berechneRoute());
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(null, "Bitte geben Sie Start- und Endpunkt an.");
+		}
+
 	}
 	public void berechneBackground()
 	{
@@ -286,6 +291,11 @@ public class Primaer extends JFrame implements ActionListener
 	            while ((line = br.readLine()) != null)
 	            {
 	                String[] eintragGelesen = line.split(";");
+	                if ((Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g+1])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g]))||(Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g+1])))
+	                {
+	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
+
+	                }	            
 	                if ((Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g+1])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g]))||(Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g+1])))
 	                {
 	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
@@ -684,20 +694,23 @@ Quelle ist die angegebene CSV Datei
                 {
                 	
                 	minDist=Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPY])-ySuche),2));
-                	dzahl=Integer.parseInt(eintragGelesen[spalte_NamePStart]);
+                	/*dzahl=Integer.parseInt(eintragGelesen[spalte_NamePStart]);
                 	String zwInt=String.format("%03d", dzahl);
-                	bestYet=zwInt+punktnamen(dzahl);
-                	//bestYet=eintragGelesen[spalte_NamePStart];
+                	bestYet=zwInt+punktnamen(dzahl);*/
+                	bestYet=eintragGelesen[spalte_NamePStart];
                 }
                 if (Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPY])-ySuche),2))<minDist)
                 {
                 	minDist=Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPY])-ySuche),2));
-                	dzahl=Integer.parseInt(eintragGelesen[spalte_NamePStart]);
+                	/*dzahl=Integer.parseInt(eintragGelesen[spalte_NamePStart]);
                 	String zwInt=String.format("%03d", dzahl);
-                	bestYet=zwInt+punktnamen(dzahl);
-                	//bestYet=eintragGelesen[spalte_NamePEnd];
+                	bestYet=zwInt+punktnamen(dzahl);*/
+                	bestYet=eintragGelesen[spalte_NamePEnd];
                 }
             }
+        	dzahl=Integer.parseInt(bestYet);
+        	String zwInt=String.format("%03d", dzahl);
+        	bestYet=zwInt+punktnamen(dzahl);
 
         } catch (FileNotFoundException e)
         {
