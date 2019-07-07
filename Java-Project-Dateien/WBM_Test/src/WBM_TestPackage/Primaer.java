@@ -10,7 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.*;
 
@@ -218,7 +217,6 @@ public class Primaer extends JFrame implements ActionListener
 	
 				e1.printStackTrace();
 			}			 
-			 //pfadObjekteLaden(comboBoxAttributwahl.getSelectedItem().toString());
 			 textfeedback.setText("Die Route wurde berechnet und \n befindet sich sichtbar auf der Karte.    \n                            ");
 			 this.neuaufbau();
 		 }
@@ -282,7 +280,6 @@ public class Primaer extends JFrame implements ActionListener
 			BufferedReader br = null;
 	        String line = "";
 	        this.gitter=false;
-
 	        for(int g=0; g<pfad.length-2; g++) { 
 	        	try
 	        {
@@ -301,7 +298,6 @@ public class Primaer extends JFrame implements ActionListener
 	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
 
 	                }	                
-	                //br.readLine();
 	            }
 
 	        } catch (FileNotFoundException e)
@@ -325,75 +321,16 @@ public class Primaer extends JFrame implements ActionListener
 	        	
 	        }
 	        	}
+	        if(this.Sammlung.size()==0)
+	        {
+	        	JOptionPane.showMessageDialog(null, 
+                        "Kein Pfad gefunden!", 
+                        "Pfad nicht verfügbar", 
+                        JOptionPane.INFORMATION_MESSAGE);
+	        }
 	       
 	}
 	
-/*	public static void pfadObjekteLaden(String aMerkmal)
-	{
-/*
-Füllt das Array "Sammlung" mit Pfad-Objekten des gewählten Merkmals
-Quelle ist die angegebene CSV Datei
- 
-		//Sammlung=null;
-		
-		
-		
-		int aktivesMerkmal= 0;
-		
-		
-		if (aMerkmal=="Barrierefrei")
-		{
-			aktivesMerkmal=spalte_MerkmalBarrierefrei;
-		}
-		else if (aMerkmal=="Ohne")
-		{
-			aktivesMerkmal=0;
-		}
-		
-		BufferedReader br = null;
-        String line = "";
-        int Zaehler = 0;
-        //Sammlung = new Pfad[1];
-        
-        try
-        {
-            br = new BufferedReader(new FileReader(csvDatenbasis));
-            br.readLine();
-            while ((line = br.readLine()) != null)
-            {
-                String[] eintragGelesen = line.split(";");
-                //System.out.println(eintragGelesen[aktivesMerkmal]);
-                if ((aktivesMerkmal==0)||(Integer.parseInt(eintragGelesen[aktivesMerkmal])==1))
-                {
-                	//Sammlung = Arrays.copyOf(Sammlung, 1+Zaehler);
-                	//Sammlung[Zaehler] = new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY]));
-            		//System.out.println(Zaehler);
-                	Zaehler++;
-                }
-                
-                //br.readLine();
-            }
-
-        } catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        } finally
-        {
-            if (br != null)
-            {
-                try
-                {
-                    br.close();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }		
-	}*/
 	private String punktnamen(int Knoten)
 	{
 		switch(Knoten)
@@ -437,7 +374,7 @@ Quelle ist die angegebene CSV Datei
 		case 37:return ": Kreuzung Weststraße / P13";
 		case 38:return ": Kreuzung Forum oben / MA";
 		case 39:return ": MA oben ";
-		case 40:return ": Krezung M-Südstraße / MA";
+		case 40:return ": Kreuzung M-Südstraße / MA";
 		case 41:return ": Kreuzung M-Südstraße / TZR";
 		case 42:return ": Kreuzung M-Südstraße / VC";
 		case 43:return ": Kreuzung M-Südstraße / Weststraße ";
@@ -460,7 +397,7 @@ Quelle ist die angegebene CSV Datei
 		case 60:return ": Kreuzung Grünfläche Ring G/M / Q-West";
 		case 61:return ": Q-West";
 		case 62:return ": Kreuzung Q-West / HGB";
-		case 63:return ": Krezuung Grünfläche / M-Südstraße ";
+		case 63:return ": Kreuzung Grünfläche / M-Südstraße ";
 		case 64:return ": HGB";
 		case 65:return ": Kreuzung GA / Grünfläche";
 		case 66:return ": GA";
@@ -689,22 +626,15 @@ Quelle ist die angegebene CSV Datei
             while ((line = br.readLine()) != null)
             {
                 String[] eintragGelesen = line.split(";");
-                //System.out.println(eintragGelesen[aktivesMerkmal]);
                 if (Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPY])-ySuche),2))<minDist)
                 {
                 	
                 	minDist=Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPY])-ySuche),2));
-                	/*dzahl=Integer.parseInt(eintragGelesen[spalte_NamePStart]);
-                	String zwInt=String.format("%03d", dzahl);
-                	bestYet=zwInt+punktnamen(dzahl);*/
                 	bestYet=eintragGelesen[spalte_NamePStart];
                 }
                 if (Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPY])-ySuche),2))<minDist)
                 {
                 	minDist=Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPY])-ySuche),2));
-                	/*dzahl=Integer.parseInt(eintragGelesen[spalte_NamePStart]);
-                	String zwInt=String.format("%03d", dzahl);
-                	bestYet=zwInt+punktnamen(dzahl);*/
                 	bestYet=eintragGelesen[spalte_NamePEnd];
                 }
             }
@@ -763,7 +693,6 @@ Quelle ist die angegebene CSV Datei
 				popup.show(Primaer.this, e.getX(), e.getY());
 				MenuXPos=e.getX();
 				MenuYPos=e.getY();
-				//System.out.println("XPos: "+MenuXPos+"  YPos: "+MenuYPos);
 			}
 		}
 	}

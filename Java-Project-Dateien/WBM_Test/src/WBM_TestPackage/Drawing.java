@@ -57,7 +57,6 @@ public class Drawing extends JComponent
 				g2.drawOval(erhaltenesBackgroundArray.get(i).getStartXPos()-((int)(0.5*strokedot)), erhaltenesBackgroundArray.get(i).getStartYPos()-((int)(0.5*strokedot)), strokedot, strokedot);
 				g2.drawOval(erhaltenesBackgroundArray.get(i).getEndXPos()-((int)(0.5*strokedot)), erhaltenesBackgroundArray.get(i).getEndYPos()-((int)(0.5*strokedot)), strokedot, strokedot);
 			}
-		//zeichnungsgitter=false;
 		}
 	}
 }
