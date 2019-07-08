@@ -16,7 +16,7 @@ import org.jpl7.Variable;
 public class prolog {
 	//private Prolog engine;
 	//private Theory vocTheory;
-	private static long pstart=1, pend=200;
+	private static long pstart=1, pende=200;
 	private int merkmal;
 	
 	public prolog() throws Exception 
@@ -31,7 +31,7 @@ public class prolog {
 	}
 	public void setAusgang(int eEnde)
 	{
-		pend=eEnde;		
+		pende=eEnde;		
 	}
 
 	public void setMerkmal(int pMerkmal)
@@ -56,7 +56,7 @@ public class prolog {
 		Query q2 = 
 				  new Query( 
 				      "go", 
-				      new Term[] {new org.jpl7.Integer(pstart),new org.jpl7.Integer(pend),X} 
+				      new Term[] {new org.jpl7.Integer(pstart),new org.jpl7.Integer(pende),X} 
 				      //new Term[] {new Atom("1"),new Atom("20"),X} 
 				  );
 			q2.hasSolution();
@@ -71,7 +71,8 @@ public class prolog {
 		    String[] pfad=ergebnis[0].split(",");
 	    	return pfad;
 
-		}else
+		}
+        else
 		{
 			Query q1 = 
 				    new Query( 
@@ -85,7 +86,7 @@ public class prolog {
 			Query q2 = 
 					  new Query( 
 					      "go", 
-					      new Term[] {new org.jpl7.Integer(pstart),new org.jpl7.Integer(pend),X} 
+					      new Term[] {new org.jpl7.Integer(pstart),new org.jpl7.Integer(pende),X} 
 					      //new Term[] {new Atom("1"),new Atom("20"),X} 
 					  );
 				q2.oneSolution();

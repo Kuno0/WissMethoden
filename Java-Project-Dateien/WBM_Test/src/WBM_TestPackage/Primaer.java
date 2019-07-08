@@ -29,11 +29,11 @@ public class Primaer extends JFrame implements ActionListener
 	public prolog pclass;
 	
 	public static int spalte_NamePStart=0;
-	public static int spalte_NamePEnd=1;
+	public static int spalte_NamePEnde=1;
 	public static int spalte_StartPX=3;
 	public static int spalte_StartPY=4;
-	public static int spalte_EndPX=5;
-	public static int spalte_EndPY=6;
+	public static int spalte_EndePX=5;
+	public static int spalte_EndePY=6;
 	public static int spalte_MerkmalBarrierefrei=8;
 	public static String csvDatenbasis = ".\\DatenBasis.CSV";
 	private Boolean gitter=false;
@@ -252,7 +252,8 @@ public class Primaer extends JFrame implements ActionListener
 	            while ((line = br.readLine()) != null)
 	            {
 	                String[] eintragGelesen = line.split(";");
-	                this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
+	                this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndePX
+            ]),Integer.parseInt(eintragGelesen[spalte_EndePY])));
 	 	                //br.readLine();
 	            }
 	        } catch (FileNotFoundException e)
@@ -290,12 +291,14 @@ public class Primaer extends JFrame implements ActionListener
 	                String[] eintragGelesen = line.split(";");
 	                if ((Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g+1])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g]))||(Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g+1])))
 	                {
-	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
+	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndePX
+                ]),Integer.parseInt(eintragGelesen[spalte_EndePY])));
 
 	                }	            
 	                if ((Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g+1])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g]))||(Integer.parseInt(eintragGelesen[1])==Integer.parseInt(pfad[g])&&Integer.parseInt(eintragGelesen[0])==Integer.parseInt(pfad[g+1])))
 	                {
-	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndPX]),Integer.parseInt(eintragGelesen[spalte_EndPY])));
+	                	this.Sammlung.add(new Pfad(Integer.parseInt(eintragGelesen[spalte_StartPX]),Integer.parseInt(eintragGelesen[spalte_StartPY]),Integer.parseInt(eintragGelesen[spalte_EndePX
+                ]),Integer.parseInt(eintragGelesen[spalte_EndePY])));
 
 	                }	                
 	            }
@@ -632,10 +635,12 @@ public class Primaer extends JFrame implements ActionListener
                 	minDist=Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_StartPY])-ySuche),2));
                 	bestYet=eintragGelesen[spalte_NamePStart];
                 }
-                if (Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPY])-ySuche),2))<minDist)
+                if (Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndePX
+        ])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndePY])-ySuche),2))<minDist)
                 {
-                	minDist=Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPX])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndPY])-ySuche),2));
-                	bestYet=eintragGelesen[spalte_NamePEnd];
+                	minDist=Math.sqrt(Math.pow((Integer.parseInt(eintragGelesen[spalte_EndePX
+            ])-xSuche),2)+Math.pow((Integer.parseInt(eintragGelesen[spalte_EndePY])-ySuche),2));
+                	bestYet=eintragGelesen[spalte_NamePEnde];
                 }
             }
         	dzahl=Integer.parseInt(bestYet);
